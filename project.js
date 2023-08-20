@@ -7,6 +7,24 @@
 //6. Give the user ther winnings
 //7. Play again
 const prompt = require("prompt-sync")(); //Importing the promt-sync library to allow the program to interactively take inputs from the user
+
+const ROWS = 3;
+const COLS = 3;
+
+const SYMBOLS_COUNT = {
+  A: 2,
+  B: 4,
+  C: 6,
+  D: 8
+}
+
+const SYMBOL_VALUES = {
+  A: 5,
+  B: 4,
+  C: 3,
+  D: 2
+}
+
 const deposit = () =>{ //Declaring constant function
   while(true){ //Initiate an infinite loop considering the condition is true
     const depositAmount = prompt("Enter a deposit amount: ");//Prompt message and waits for the user to input a value
@@ -45,6 +63,29 @@ const getBet = (balance, lines) => {
     }//Close else block
   }//End while loop
 };
+
+const spin = () => {
+  const symbols = [];
+  for(const[symbol, count] of Object.entries(SYMBOLS_COUNT)){
+    for(let i = 0; i < count; i++){
+      symbols.push(symbol);
+    }
+  }
+  const reels = [[], [], []];
+  for(let i = 0; i < COLS; i++){
+    const reelSymbols = [...symbols];
+    for(let j = 0; j < ROWS; j++){
+      const randomIndex = Math.floor(Math.random() * reelSymbols.length);
+      const selectedSymbols = reelSymbols[randomIndex];
+      reels[i].push(selectedSymbols);
+      reelSymbols.splice(randomIndex, 1);
+    }
+  }
+
+  return reels;
+};
+const reels = spin();
+console.log(reels);
 let balance = deposit();
 const numberOfLines = getNumberOfLines();
 const bet = getBet(balance, numberOfLines);
